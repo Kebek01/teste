@@ -1,0 +1,32 @@
+import streamlit as st
+import random 
+palavra_secreta = ['python','JavaScript','programação','computador','codígo' ]
+random.choice(palavra_secreta)
+
+letras_corretas = set()
+letras_erradas = set()
+
+st.title("Adivinhe a palavra ")
+
+st.write("Tente adivinhar a palavra inserindo letras. Você perde após 6 tentativas incorretas.")
+
+while len(letras_erradas) < 6 and letras_corretas != set(palavra_secreta):
+    display = [letra if letra in letras_corretas else '_' for letra in palavra_secreta]
+    
+    st.write(' '.join(display))
+    st.write("Letras erradas:", ', '.join(letras_erradas))
+    
+    tentativa = st.text_input("Digite uma letra:").lower()
+    if len(tentativa) == 1:
+        if tentativa in letras_corretas or tentativa in letras_erradas:
+            
+            st.warning("Você já tentou essa letra. Tente outra.")
+            
+        elif tentativa in palavra_secreta:
+            letras_corretas |= {tentativa}
+        else:
+            letras_erradas |= {tentativa}
+if letras_corretas == set(palavra_secreta):
+    st.success("Parabéns, Você ganhou!")
+else:
+    st.error(f"Você perdeu! A palavra era '{palavra_secreta}'")
